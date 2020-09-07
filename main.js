@@ -5,7 +5,7 @@ const slash = require('slash');
 const MainWindow = require('./MainWindow');
 const AboutWindow = require('./AboutWindow');
 
-process.env.NODE_ENV = "development"
+process.env.NODE_ENV = "production"
 const isDev = process.env.NODE_ENV !== "production"
 let primaryDisplay;
 let mainWindow;
