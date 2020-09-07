@@ -3,6 +3,7 @@ const path = require('path');
 const os = require('os');
 const slash = require('slash');
 const MainWindow = require('./MainWindow');
+const AboutWindow = require('./AboutWindow');
 
 process.env.NODE_ENV = "development"
 const isDev = process.env.NODE_ENV !== "production"
@@ -15,18 +16,7 @@ function createMainWindow() {
 }
 
 function createAboutWindow() {
-    console.log((primaryDisplay.size.width - 500)/2);
-
-    aboutWindow = new BrowserWindow({   
-        title: "ImageShrink",
-        width: (primaryDisplay.size.width - 500)/2 > 500 ? 500 : (primaryDisplay.size.width - 500)/2,
-        height: isDev? primaryDisplay.size.height : 600,
-        x: (primaryDisplay.size.width - 500)/2 > 500? (primaryDisplay.size.width - 500)/2 - 500: 0,
-        y: (primaryDisplay.size.height - 600)/2+12,
-        icon: './assets/icons/cpu.png',
-    })
-    // aboutWindown.loadUrl('https://github.com/lmt20')
-    aboutWindow.loadURL('https://github.com/lmt20')
+    aboutWindow = new AboutWindow('https://github.com/lmt20', primaryDisplay, isDev)
 }
 
 
