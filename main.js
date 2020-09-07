@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain, shell, screen, Tray } = require('elec
 const path = require('path');
 const os = require('os');
 const slash = require('slash');
-
+const MainWindow = require('./MainWindow');
 
 process.env.NODE_ENV = "development"
 const isDev = process.env.NODE_ENV !== "production"
@@ -11,27 +11,13 @@ let mainWindow;
 let tray;
 
 function createMainWindow() {
-    mainWindow = new BrowserWindow({
-        title: "ImageShrink",
-        width: isDev ?  primaryDisplay.size.width : 500,
-        height: isDev? primaryDisplay.size.height : 600,
-        icon: './assets/icons/cpu.png',
-        // show: false,
-        opacity: 0.9,
-        webPreferences: {
-            nodeIntegration: true,
-        },
-    })
-    mainWindow.loadFile('./app/index.html')
-    if(isDev ){
-        mainWindow.webContents.openDevTools()
-    }
+    mainWindow = new MainWindow('./app/index.html', isDev, primaryDisplay)
 }
 
 function createAboutWindow() {
     console.log((primaryDisplay.size.width - 500)/2);
 
-    aboutWindow = new BrowserWindow({
+    aboutWindow = new BrowserWindow({   
         title: "ImageShrink",
         width: (primaryDisplay.size.width - 500)/2 > 500 ? 500 : (primaryDisplay.size.width - 500)/2,
         height: isDev? primaryDisplay.size.height : 600,
@@ -53,7 +39,7 @@ app.on('ready', () => {
     template[1].submenu.unshift({
         label: "Toggle Nav",
         click: () => {
-          mainWindow.webContents.send('nav:toggle')
+            mainWindow.webContents.send('nav:toggle')
         },
         accelerator: 'CmdOrCtrl+N'
     })
@@ -61,7 +47,7 @@ app.on('ready', () => {
     Menu.setApplicationMenu(menu)
     primaryDisplay = screen.getPrimaryDisplay()
     createMainWindow()
-
+    
     const iconPath = path.join(__dirname, 'assets', 'icons','cpu.png')
     tray = new Tray(iconPath)
     tray.on('click', () => {
@@ -73,7 +59,6 @@ app.on('ready', () => {
         }
     })
     tray.on('right-click', () => {
-        console.log("okkfoko");
         const contextMenu = Menu.buildFromTemplate([{
             label: 'Quit',
             click: () => {
