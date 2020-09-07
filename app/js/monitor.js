@@ -1,6 +1,7 @@
 const osu = require('node-os-utils');
 const { options } = require('node-os-utils');
 const path = require('path');
+const { memory } = require('console');
 
 const cpu = osu.cpu;
 const os = osu.os;
@@ -8,6 +9,39 @@ const mem = osu.mem;
 let cpuOverload = 80;
 let memOverload = 80;
 let alertFrequenceSeconds = 5;
+
+// set thresh to warning cpu or memory
+if (!localStorage.getItem('user-setting')) {
+    localStorage.setItem('user-setting', JSON.stringify({
+        cpuOverload,
+        memOverload,
+        alertFrequenceSeconds
+    }))
+    $('#cpu-warning-thresh').val(cpuOverload)
+    $('#mem-warning-thresh').val(memOverload)
+    $('#frequency-warning-time').val(alertFrequenceSeconds)
+} else {
+    const userSetting = JSON.parse(localStorage.getItem('user-setting'))
+    cpuOverload = userSetting.cpuOverload;
+    memOverload = userSetting.memOverload;
+    alertFrequenceSeconds = userSetting.alertFrequenceSeconds;
+    $('#cpu-warning-thresh').val(cpuOverload)
+    $('#mem-warning-thresh').val(memOverload)
+    $('#frequency-warning-time').val(alertFrequenceSeconds)
+}
+
+$('#save-setting').click((e) => {
+    e.preventDefault()
+    cpuOverload = $('#cpu-warning-thresh').val();
+    memOverload = $('#mem-warning-thresh').val();
+    alertFrequenceSeconds = $('#frequency-warning-time').val();
+    localStorage.setItem('user-setting', JSON.stringify({
+        cpuOverload,
+        memOverload,
+        alertFrequenceSeconds
+    }))
+})
+
 
 $('#cpu-model').text(cpu.model());
 $('#computer-name').text(os.hostname());
@@ -36,7 +70,7 @@ setInterval(() => {
             })
             localStorage.setItem('lastCpuNotify', +new Date())
         }
-        
+
     })
     cpu.free().then(cpuFree => {
         $('#cpu-free').text(cpuFree.toFixed(2))
@@ -47,7 +81,7 @@ setInterval(() => {
         $('#progress-mem-bar').css('width', `${(100 - info.freeMemPercentage).toFixed(2)}%`)
         if (info.freeMemPercentage <= (100 - memOverload)) {
             $('#progress-mem-bar').css('backgroundColor', 'red')
-            if(runMemNotify()){
+            if (runMemNotify()) {
                 new Notification('Memory overload', {
                     title: 'Memory overload',
                     body: "Running out of memory!!",

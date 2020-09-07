@@ -44,12 +44,15 @@
                 <form class="form-group">
                   <label class="label-item">CPU Overload Warning %</label>
                   <input type="text"
-                    class="form-control input-item">
-                  <label class="label-item">Alert Frequency (In minutes)</label>
+                    class="form-control input-item"  id="cpu-warning-thresh">
+                  <label class="label-item">Memory Overload Warning %</label>
                   <input type="text"
-                    class="form-control input-item">
+                    class="form-control input-item"  id="mem-warning-thresh">
+                  <label class="label-item">Alert Frequency (In seconds)</label>
+                  <input type="text"
+                    class="form-control input-item" id="frequency-warning-time">
                     
-                  <button type="submit" class="bg-dark">Save</button>
+                  <button class="bg-dark" id="save-setting">Save</button>
                 </form>
 			</div>
 			<nav class="container nav-bar">
