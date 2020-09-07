@@ -54,7 +54,7 @@ mem.info().then(info => {
 setInterval(() => {
     $('#sys-uptime').text(convertToDhms(os.uptime()))
     cpu.usage().then(cpuPercentage => {
-        $('#cpu-usage').text(cpuPercentage.toFixed(2))
+        $('#cpu-usage').text(`${cpuPercentage.toFixed(2)}%`)
         $('#progress-cpu-percent').text(`${cpuPercentage.toFixed(2)}%`)
         $('#progress-cpu-bar').css('width', `${cpuPercentage}%`)
         if (cpuPercentage >= cpuOverload) {
@@ -73,10 +73,10 @@ setInterval(() => {
 
     })
     cpu.free().then(cpuFree => {
-        $('#cpu-free').text(cpuFree.toFixed(2))
+        $('#cpu-free').text(`${cpuFree.toFixed(2)}%`)
     })
     mem.info().then(info => {
-        $('#used-mem').text(info.usedMemMb)
+        $('#used-mem').text(`${info.usedMemMb} Mb`)
         $('#progress-mem-percent').text(`${(100 - info.freeMemPercentage).toFixed(2)}%`)
         $('#progress-mem-bar').css('width', `${(100 - info.freeMemPercentage).toFixed(2)}%`)
         if (info.freeMemPercentage <= (100 - memOverload)) {

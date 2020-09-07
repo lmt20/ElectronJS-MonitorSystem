@@ -5,7 +5,7 @@ class MainWindow extends BrowserWindow {
         super({
             title: "ImageShrink",
             width: isDev ?  primaryDisplay.size.width : 630,
-            height: isDev? primaryDisplay.size.height : 630,
+            height: isDev? primaryDisplay.size.height : 720,
             icon: './assets/icons/cpu.png',
             // show: false,
             opacity: 0.9,
