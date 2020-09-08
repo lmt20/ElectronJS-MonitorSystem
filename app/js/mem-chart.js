@@ -1,9 +1,7 @@
     let dpsMem = []; // dataPoints
-    let widthMem = $('#chartMemContainer').width();
-    let heightMem = $('#chartMemContainer').height();
     let chartMem = new CanvasJS.Chart("chartMemContainer", {
-        width: widthMem,
-        height: heightMem,
+        // width: width,
+        // height: height,
         title: {
             text: "Memory realtime monitor",
         },
@@ -53,16 +51,20 @@
                 // chart.render();
             });
         } else {
-            cpu.usage().then((cpuPercentage) => {
-                yValMem = Math.round(cpuPercentage);
-                dpsMem.push({
-                    x: xValMem,
-                    y: yValMem,
-                });
-                xValMem++;
-                dpsMem.shift();
-
-                chartMem.render();
+            mem.info().then(info => {
+                try {
+                    yValMem = Math.round(100-info.freeMemPercentage);
+                    dpsMem.push({
+                        x: xValMem,
+                        y: yValMem,
+                    });
+                    xValMem++;
+                    dpsMem.shift();
+                    chartMem.render();
+                } catch (error) {
+                    console.log(error);
+                    console.log("errrrrrr");
+                }
             });
         }
     };

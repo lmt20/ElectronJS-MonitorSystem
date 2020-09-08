@@ -6,9 +6,12 @@ const { memory } = require('console');
 const cpu = osu.cpu;
 const os = osu.os;
 const mem = osu.mem;
+const netstat = osu.netstat;
 let cpuOverload = 80;
 let memOverload = 80;
 let alertFrequenceSeconds = 5;
+let totalReceived = 0;
+let totalSended = 0;
 
 // set thresh to warning cpu or memory
 if (!localStorage.getItem('user-setting')) {
@@ -52,6 +55,7 @@ mem.info().then(info => {
 })
 
 setInterval(() => {
+    //CPU
     $('#sys-uptime').text(convertToDhms(os.uptime()))
     cpu.usage().then(cpuPercentage => {
         $('#cpu-usage').text(`${cpuPercentage.toFixed(2)}%`)
@@ -75,6 +79,7 @@ setInterval(() => {
     cpu.free().then(cpuFree => {
         $('#cpu-free').text(`${cpuFree.toFixed(2)}%`)
     })
+    //Mem
     mem.info().then(info => {
         $('#used-mem').text(`${info.usedMemMb} Mb`)
         $('#progress-mem-percent').text(`${(100 - info.freeMemPercentage).toFixed(2)}%`)
@@ -94,6 +99,16 @@ setInterval(() => {
             $('#progress-mem-bar').css('backgroundColor', `rgba(6,83,20,0.99)`)
         }
     })
+    //Network
+    netstat.inOut()
+        .then(info => {
+            totalReceived += info.total.inputMb*1000;
+            totalSended += info.total.outputMb*1000;
+            $('#receiving').text(`${info.total.inputMb*1000} KiB/s`);
+            $('#sending').text(`${info.total.outputMb*1000} KiB/s`);
+            $('#received').text(`${totalReceived} KiB`);
+            $('#sended').text(`${totalSended} Kib`);
+        })
 
 }, 1000)
 

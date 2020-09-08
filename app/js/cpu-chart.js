@@ -1,9 +1,7 @@
     let dps = []; // dataPoints
-    let width = $('#chartCpuContainer').width();
-    let height = $('#chartCpuContainer').height();
+    // let width = $('#chartCpuContainer').width();
+    // let height = $('#chartCpuContainer').height();
     let chart = new CanvasJS.Chart("chartCpuContainer", {
-        width: width,
-        height: height,
         title: {
             text: "CPU realtime monitor",
         },
@@ -61,13 +59,44 @@
                 });
                 xVal++;
                 dps.shift();
-
+                width = $('#chartCpuContainer').width();
                 chart.render();
             });
         }
     };
 
     updateChart(dataLength);
+
+    // ipcRenderer.on('window:resize', () => {
+    //     console.log("okokok");
+    //     width = $('#chartCpuContainer').width();
+    //     chart = new CanvasJS.Chart("chartCpuContainer", {
+    //         width: width,
+    //         height: height,
+    //         title: {
+    //             text: "CPU realtime monitor",
+    //         },
+    //         data: [
+    //             {
+    //                 color: "LightSeaGreen",
+    //                 type: "spline",
+    //                 dataPoints: dps,
+    //             },
+    //         ],
+    //         axisY: {
+    //             maximum: 100,
+    //             minimum: 0,
+    //             title: "CPU Usage",
+    //             suffix: "%",
+    //         },
+    //         axisX: {
+    //             title: "Monitor Timer",
+    //             suffix: "s",
+    //         },
+    //         backgroundColor: '#F5DEB3',
+    //     });
+    // })
+
     setInterval(function () {
         updateChart();
     }, updateInterval);

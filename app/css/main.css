@@ -104,3 +104,18 @@ body {
     color: #eee;
     margin: 15px;
 }
+
+
+.network-container {
+    display: flex;
+    justify-content: space-around;
+    color: #eee;
+    /* text-align: center; */
+}
+
+.fa-download {
+    color: rgba(5,207,14,0.95);
+}
+.fa-upload {
+    color: rgba(243, 64, 9, 0.89);
+}

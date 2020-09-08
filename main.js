@@ -13,6 +13,9 @@ let tray;
 
 function createMainWindow() {
     mainWindow = new MainWindow('./app/index.html', isDev, primaryDisplay)
+    // mainWindow.on('resize', () => {
+    //     mainWindow.webContents.send('window:resize')
+    // })
 }
 
 function createAboutWindow() {
@@ -73,3 +76,4 @@ app.on('activate', () => {
         createMainWindow()
     }
 })
+
